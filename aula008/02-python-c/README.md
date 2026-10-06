@@ -1,17 +1,15 @@
 # Exercício 2/3 — Qual é a saída?
 
-Para cada trecho: **(a)** qual é a saída? **(b)** qual conceito da aula explica?
+Para cada trecho: (a) qual é a saída? (b) qual conceito da aula explica?
 
----
-
-## 3 · Python
+## 3. Python
 
 ```python
 fs = [lambda: i for i in range(3)]
 print([f() for f in fs])
 ```
 
-**(a) Saída:**
+### (a) Saída
 
 ```
 [2, 2, 2]
@@ -19,22 +17,20 @@ print([f() for f in fs])
 
 ![Execução no OneCompiler](q3_original_onecompiler.png)
 
-**(b) Conceito:** **fechamento (closure) e ligação tardia (late binding)**.
+### (b) Conceito: fechamento (closure) e ligação tardia
 
-As `lambda` não guardam uma cópia de `i` a cada iteração. Todas ficam referenciando a **mesma variável** `i` do ambiente onde foram criadas.
+As `lambda` não guardam o valor de `i` de cada volta do laço. Todas guardam uma referência para a mesma variável `i`.
 
-Quando as funções são executadas, o `for` já terminou e `i` vale `2`. Por isso, todas retornam `2`.
+Quando as funções são chamadas, o laço já terminou e `i` vale 2. Por isso as três devolvem 2.
 
 ### Correção
 
-Capturar o valor de `i` no momento da criação usando um parâmetro com valor padrão (`i=i`), que é avaliado na definição de cada `lambda`:
+Capturar o valor de `i` na hora em que cada `lambda` é criada, usando um parâmetro com valor padrão:
 
 ```python
 fs = [lambda i=i: i for i in range(3)]
 print([f() for f in fs])
 ```
-
-Saída:
 
 ```
 [0, 1, 2]
@@ -42,9 +38,7 @@ Saída:
 
 ![Execução corrigida no OneCompiler](q3_corrigido_onecompiler.png)
 
----
-
-## 4 · C
+## 4. C
 
 ```c
 #include <stdio.h>
@@ -62,7 +56,7 @@ int main(void) {
 }
 ```
 
-**(a) Saída:**
+### (a) Saída
 
 ```
 3
@@ -70,18 +64,20 @@ int main(void) {
 
 ![Execução no OneCompiler](q4_onecompiler.png)
 
-**(b) Conceito:** **variável local `static`** (tempo de vida estático, escopo local).
+### (b) Conceito: variável local `static`
 
-A variável `static int n = 0;` é inicializada **uma única vez** e mantém seu valor entre as chamadas da função (não fica na pilha, e sim na área de dados estáticos).
+A variável `n` é local (só `contador` enxerga), mas por ser `static` ela não fica na pilha: é inicializada uma única vez e mantém o valor entre as chamadas.
 
-1. `contador()` → `n` passa de `0` para `1`
-2. `contador()` → `n` passa de `1` para `2`
-3. `contador()` → `n` passa de `2` para `3`
+| Chamada | `n` antes | `n` depois |
+|---|---|---|
+| 1ª | 0 | 1 |
+| 2ª | 1 | 2 |
+| 3ª | 2 | 3 |
 
-Portanto, o `printf` imprime **3**.
+O `printf` mostra o retorno da terceira chamada, que é 3.
 
-> Esse código não tem erro — o `static` é usado de propósito, então não precisa de correção.
+Esse código não tem erro: o `static` foi usado de propósito, então não precisa de correção.
 
 ---
 
-**Arquivos:** [q3_original.py](q3_original.py) · [q3_corrigido.py](q3_corrigido.py) · [q4.c](q4.c)
+Arquivos: [q3_original.py](q3_original.py), [q3_corrigido.py](q3_corrigido.py), [q4.c](q4.c)
